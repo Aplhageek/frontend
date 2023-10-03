@@ -1,0 +1,33 @@
+.footer_wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  background-color: rgb(61, 61, 61);
+  height: fit-content;
+  width: 100%;
+  padding: 2vw 5vw;
+  box-sizing: border-box;
+  color: white;
+}
+
+.footer_description {
+}
+
+.footer_title {
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.description_para {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.footer_list {
+}
+
+.footer_list {
+  list-style: none;
+  padding-left: 0;
+}

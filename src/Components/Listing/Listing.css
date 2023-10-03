@@ -1,0 +1,31 @@
+.listing_wrapper {
+  width: 80vw;
+  margin: 30px auto;
+}
+
+.listing_details {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 5px 10px;
+  font-size: 14px;
+}
+
+.property_name {
+  font-weight: 600 !important   ;
+}
+
+.property_price {
+  font-weight: bold;
+}
+
+.property_city {
+  background-color: rgb(139, 22, 22);
+  padding: 5px 10px;
+  color: #fff;
+  border-radius: 30px;
+}
+
+.listing_title {
+  font-weight: 600;
+}
