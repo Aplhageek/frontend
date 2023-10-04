@@ -52,7 +52,8 @@ const Explore = () => {
 
     }
 
-    const handleSortByChange = () => {
+    const handleSortByChange = (event) => {
+        setSortBy(event.target.value);
 
     }
 
@@ -80,10 +81,16 @@ const Explore = () => {
                 />
 
                 {/* SortingFilter */}
-                <SortingFilter />
+                <SortingFilter sortBy={sortBy} handleSortByChange={handleSortByChange} />
 
                 {/* Listing Table */}
-                <Table />
+                <Table 
+
+                listings={listings}
+                locationFilter={locationFilter}
+                priceFilter={priceFilter}
+                sortBy={sortBy}
+                />
 
 
             </div>
