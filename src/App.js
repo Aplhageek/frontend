@@ -3,7 +3,6 @@ import { Route, Routes } from 'react-router-dom';
 import LandingPage from './Components/LandingPage/LandingPage';
 import Explore from './Components/Explore/Explore';
 
-
 function App() {
   return (
     <div className="App">
