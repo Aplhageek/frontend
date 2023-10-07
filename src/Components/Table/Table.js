@@ -13,15 +13,19 @@ function Table(
     // current page
     // filtered listings
     // selected listings
-    const [currentPage, setCurrentPage] = useState();
+    const [currentPage, setCurrentPage] = useState(1);
     const [filteredData, setFilteredData] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
     
     let itemsPerPage = 10;
     let displayItems = appplyFilter(filteredData, locationFilter, priceFilter, sortBy);
+    // return immediate higher integer 
     let totalPages = Math.ceil(displayItems.length / itemsPerPage);
-    let startIndex;
-    let endIndex;
+
+ 
+    let endIndex = currentPage * itemsPerPage ;
+    let startIndex = endIndex  - itemsPerPage ;
+    
 
 
 
@@ -67,6 +71,19 @@ function Table(
         return updatedData;
     }
 
+    // to get number of pages
+
+    const getPageNumber = (totalPages) =>{
+        const pageNumber = [];
+
+        for (let i = 1; i <= totalPages; i++) {
+            pageNumber.push(i);
+        }
+        return pageNumber;
+    }
+
+    const pageNumber = getPageNumber(totalPages);
+
 
     useEffect(() => {
         setFilteredData(listings);
@@ -97,7 +114,7 @@ function Table(
                     </tr>
                 </thead>
                 <tbody>
-                    {displayItems.map((item, index) => {
+                    {displayItems.slice(startIndex, endIndex).map((item, index) => {
                         return (
                             <tr className='table_row'>
                                 <td>
@@ -120,6 +137,27 @@ function Table(
             </table>
 
             {/* table footer */}
+
+            <div className="table_footer">
+                <button>Delete selected</button>
+                <div className="pagination_container">
+                    <span>Page { totalPages < 1 ? 0 :  currentPage} of {totalPages}</span>
+                    <div className="pagination">
+                        <button disabled={currentPage === 1} onClick={ () => setCurrentPage(1) }>First</button>
+                        <button disabled={currentPage === 1}  onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
+                        {/* Loop */}
+                        {
+                            pageNumber.map(page =>{
+                                return (<button  key={page}  onClick={ () => setCurrentPage(page)}> {page}</button>)
+                            })
+                        }
+                        <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
+                        <button disabled={currentPage === totalPages} onClick={ () => setCurrentPage(totalPages) }>Last</button>
+                    </div>
+                </div>
+            </div>
+
+            
         </div>
     )
 }
