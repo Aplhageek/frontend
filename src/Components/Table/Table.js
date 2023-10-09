@@ -16,16 +16,16 @@ function Table(
     const [currentPage, setCurrentPage] = useState(1);
     const [filteredData, setFilteredData] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
-    
+
     let itemsPerPage = 10;
     let displayItems = appplyFilter(filteredData, locationFilter, priceFilter, sortBy);
     // return immediate higher integer 
     let totalPages = Math.ceil(displayItems.length / itemsPerPage);
 
- 
-    let endIndex = currentPage * itemsPerPage ;
-    let startIndex = endIndex  - itemsPerPage ;
-    
+
+    let endIndex = currentPage * itemsPerPage;
+    let startIndex = endIndex - itemsPerPage;
+
 
 
 
@@ -39,6 +39,19 @@ function Table(
 
     // normal methods
 
+
+    /**
+ * Apply Filters and Sorting to a List of Real Estate Listings
+ *
+ * This function takes a list of real estate listings, applies filters based on location and price,
+ * and sorts the filtered list based on the selected sorting criteria.
+ *
+ * @param {Array} filteredData - The initial list of real estate listings to be filtered and sorted.
+ * @param {Array} locationFilter - An array of selected location filters (cities).
+ * @param {Array} priceFilter - An array of selected price range filters (e.g., ['1000-2000', '2000-3000']).
+ * @param {string} sortBy - The sorting criteria ('price' or 'date').
+ * @returns {Array} - The filtered and sorted list of real estate listings.
+ */
     function appplyFilter(filteredData, locationFilter, priceFilter, sortBy) {
         let updatedData = [...filteredData];
         if (locationFilter.length > 0) {
@@ -73,7 +86,7 @@ function Table(
 
     // to get number of pages
 
-    const getPageNumber = (totalPages) =>{
+    const getPageNumber = (totalPages) => {
         const pageNumber = [];
 
         for (let i = 1; i <= totalPages; i++) {
@@ -141,23 +154,23 @@ function Table(
             <div className="table_footer">
                 <button>Delete selected</button>
                 <div className="pagination_container">
-                    <span>Page { totalPages < 1 ? 0 :  currentPage} of {totalPages}</span>
+                    <span>Page {totalPages < 1 ? 0 : currentPage} of {totalPages}</span>
                     <div className="pagination">
-                        <button disabled={currentPage === 1} onClick={ () => setCurrentPage(1) }>First</button>
-                        <button disabled={currentPage === 1}  onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
+                        <button disabled={currentPage === 1} onClick={() => setCurrentPage(1)}>First</button>
+                        <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
                         {/* Loop */}
                         {
-                            pageNumber.map(page =>{
-                                return (<button  key={page}  onClick={ () => setCurrentPage(page)}> {page}</button>)
+                            pageNumber.map(page => {
+                                return (<button key={page} onClick={() => setCurrentPage(page)}> {page}</button>)
                             })
                         }
                         <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
-                        <button disabled={currentPage === totalPages} onClick={ () => setCurrentPage(totalPages) }>Last</button>
+                        <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(totalPages)}>Last</button>
                     </div>
                 </div>
             </div>
 
-            
+
         </div>
     )
 }

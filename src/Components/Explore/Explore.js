@@ -51,7 +51,7 @@ const Explore = () => {
         }
 
     }
-
+     
     const handleSortByChange = (event) => {
         setSortBy(event.target.value);
 
