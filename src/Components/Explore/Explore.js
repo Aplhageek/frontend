@@ -61,6 +61,7 @@ const Explore = () => {
     //USEEFFECT
     useEffect(() => {
         fetchListings();
+        document.title = "CRUD APP";
     }, []);
 
     return (

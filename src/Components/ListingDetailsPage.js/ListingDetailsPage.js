@@ -27,6 +27,7 @@ const ListingDetailsPage = () => {
 
     useEffect(() => {
         fetchListing(property_id);
+        document.title = "Listing";
     }, []);
 
 
