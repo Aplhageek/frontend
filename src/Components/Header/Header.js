@@ -14,8 +14,14 @@ const Header = ({ onPage }) => {
             {
                 onPage === 'home' ? (
                     <span className="nav_Link" onClick={() => navigation('/listings')}>Explore</span>
-                ) : (
-                    <span className="nav_Link" onClick={() => navigation('/')}>Featured     Listing</span>
+                ) : 
+                (   onPage === "details" ? (
+                    <div>
+                    <span className="nav_Link" onClick={() => navigation('/')}>Featured</span>
+                    <span className="nav_Link" onClick={() => navigation('/listings')}>Explore</span>
+                    </div>
+                ) :
+                    <span className="nav_Link" onClick={() => navigation('/')}>Featured Listing</span>
                 )
             }
 

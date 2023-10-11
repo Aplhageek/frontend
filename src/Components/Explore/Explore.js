@@ -5,6 +5,7 @@ import config from '../../config';
 import CheckBoxFilter from '../CheckBoxFilter/CheckBoxFilter';
 import SortingFilter from '../SortingFilter/SortingFilter';
 import Table from '../Table/Table';
+import './Explore.css'
 
 const Explore = () => {
 
@@ -51,7 +52,7 @@ const Explore = () => {
         }
 
     }
-     
+
     const handleSortByChange = (event) => {
         setSortBy(event.target.value);
 
@@ -84,12 +85,12 @@ const Explore = () => {
                 <SortingFilter sortBy={sortBy} handleSortByChange={handleSortByChange} />
 
                 {/* Listing Table */}
-                <Table 
+                <Table
 
-                listings={listings}
-                locationFilter={locationFilter}
-                priceFilter={priceFilter}
-                sortBy={sortBy}
+                    listings={listings}
+                    locationFilter={locationFilter}
+                    priceFilter={priceFilter}
+                    sortBy={sortBy}
                 />
 
 

@@ -1,0 +1,49 @@
+.lsiting_detail_container{
+    width: 70vw;
+    /* background-color: lightsalmon; */
+    height: 60vh;
+    margin: 150px auto;  
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+.img_container{
+    width: 45%;
+    overflow: hidden;
+}
+
+
+.property_details{
+    width: 45%;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.property_details h1{
+    margin: 0;
+}
+
+
+
+.img_container img{
+    width: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+
+
+
+
+.error_message{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}

@@ -37,7 +37,7 @@ const Listing = () => {
     return (
         <div className='listing_wrapper'>
 
-            {listingData?.length && <h2 className="listing_title">Here are some of our featured listings:</h2>}
+            {listingData?.length  > 0 && <h2 className="listing_title">Here are some of our featured listings:</h2>}
             <Grid container rowSpacing={5} columnSpacing={{ xs: 1, sm: 2, md: 3 }} >
 
                 {

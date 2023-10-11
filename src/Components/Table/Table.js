@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from 'react'
+import { MdDelete } from 'react-icons/md';
+import { BiSolidEdit } from 'react-icons/bi';
+import EditModal from '../EditModal/EditModal';
+import './table.css';
 
 function Table(
     {
@@ -16,25 +20,101 @@ function Table(
     const [currentPage, setCurrentPage] = useState(1);
     const [filteredData, setFilteredData] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
+    const [editingItems, setEditingItems] = useState(null);
+    const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
+
 
     let itemsPerPage = 10;
     let displayItems = appplyFilter(filteredData, locationFilter, priceFilter, sortBy);
+
     // return immediate higher integer 
     let totalPages = Math.ceil(displayItems.length / itemsPerPage);
-
-
     let endIndex = currentPage * itemsPerPage;
     let startIndex = endIndex - itemsPerPage;
 
 
+    // To handle edge case where at the last page there will be less number of rows
+    let isSelectedAll = displayItems.length !== 0 && (selectedRows.length === (currentPage === totalPages ? displayItems.slice(startIndex).length : itemsPerPage));
 
 
     // editing functions
 
+    const handleEdit = (item) => {
+        setEditingItems(item);
+        setIsEditingModalOpen(true);
+    };
+
+    const handleEditSave = (editedItem) => {
+        const updatedData = [...filteredData];
+
+        const indexOfItem = updatedData.findIndex(data => data.property_id === editedItem.property_id);
+
+        if (indexOfItem >= 0) {
+            updatedData[indexOfItem] = editedItem;
+            setFilteredData(updatedData);
+            handleEditCancel();
+        }
+    };
+
+    const handleEditCancel = () => {
+        setIsEditingModalOpen(false);
+        setEditingItems(null);
+    };
+
     // Delete fuctions
+    const checkPage = (newData) => {
+        const updatedPage = Math.ceil(newData.length / itemsPerPage);
+        if (currentPage > updatedPage) {
+            setCurrentPage(updatedPage);
+        }
+    }
+
+    const handleDelete = (id) => {
+        const updatedData = filteredData.filter(data => data.property_id !== id);
+        setFilteredData(updatedData);
+        // to reset the selected rows array
+        const updatedSelectedRows = selectedRows.filter(data => data !== id);
+        setSelectedRows(updatedSelectedRows);
+        checkPage(updatedData);
+    };
+
+    const handleDeleteAllSelected = () => {
+        if (selectedRows.length === 0) {
+            alert("please selecte rows to delete");
+            return;
+        }
+
+        const updatedData = filteredData.filter(data => !selectedRows.includes(data.property_id));
+        checkPage(updatedData);
+        setFilteredData(updatedData);
+        setSelectedRows([]);
+    };
 
     // checkbox functions
+    const handleSelectAll = (event, displayItems) => {
+        const isALlChecked = event.target.checked;
 
+        if (isALlChecked) {
+            const endIndex = currentPage * itemsPerPage;
+            const startIndex = endIndex - itemsPerPage;
+
+            // Do not addthe elements in for loop one by oneas the state change will call render
+            const rows = [];
+
+            for (let i = startIndex; i < endIndex && i < displayItems.length; i++) {
+                rows.push(displayItems[i].property_id);
+            }
+            setSelectedRows(rows);
+
+        } else {
+            setSelectedRows([]);
+            isSelectedAll = false;
+        }
+    };
+
+    const handleRowCheckBoxChange = (event, id) => {
+        event.target.checked ? setSelectedRows(prev => [...prev, id]) : setSelectedRows(prev => prev.filter(item => item !== id));
+    };
     // paginatins functions
 
     // normal methods
@@ -79,7 +159,7 @@ function Table(
             updatedData.sort((first, second) => new Date(first.listing_date) - new Date(second.listing_date));
         }
 
-        console.log("dddddddddddddddddddd", updatedData);
+        // console.log("dddddddddddddddddddd", updatedData);
 
         return updatedData;
     }
@@ -109,6 +189,17 @@ function Table(
 
     // }, [filteredData, locationFilter, priceFilter, sortBy] );
 
+    useEffect(() => {
+        setSelectedRows([]);
+    }, [currentPage]);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [locationFilter, priceFilter]);
+
+    // console.log(selectedRows, "selectedRows");
+    // console.log(selectedRows, "sssssssssss");
+
 
     return (
         <div className='listing_table_container'>
@@ -117,7 +208,7 @@ function Table(
                 <thead>
                     <tr>
                         <th>
-                            <input type="checkbox" checked={""} onChange={""} />
+                            <input disabled={displayItems.length === 0} type="checkbox" checked={isSelectedAll} onChange={(event) => handleSelectAll(event, displayItems)} />
                         </th>
                         <th>Property Name</th>
                         <th>Price</th>
@@ -129,17 +220,18 @@ function Table(
                 <tbody>
                     {displayItems.slice(startIndex, endIndex).map((item, index) => {
                         return (
-                            <tr className='table_row'>
+                            <tr className={`table_row ${selectedRows.includes(item.property_id) ? "selected_Row" : ""}`} key={index}>
                                 <td>
-                                    <input type="checkbox" name="" id="" checked={""} />
+                                    <input type="checkbox" checked={selectedRows.includes(item.property_id)} onChange={(event) => handleRowCheckBoxChange(event, item.property_id)} />
                                 </td>
                                 <td className='property_name'> {item.property_name} </td>
-                                <td>Rs. {item.price} 8465 </td>
+                                <td>Rs. {item.price} </td>
                                 <td> {item.address} </td>
                                 <td> {item.listing_date} </td>
 
                                 <td className='action_item'>
-                                    Delete, Edit
+                                    <MdDelete className='action_buttons' onClick={() => handleDelete(item.property_id)} />
+                                    <BiSolidEdit  className='action_buttons' onClick={() => handleEdit(item)} />
                                 </td>
 
                             </tr>
@@ -152,12 +244,13 @@ function Table(
             {/* table footer */}
 
             <div className="table_footer">
-                <button>Delete selected</button>
+                <button className='delete_selected_btn' onClick={handleDeleteAllSelected}>Delete selected</button>
                 <div className="pagination_container">
                     <span>Page {totalPages < 1 ? 0 : currentPage} of {totalPages}</span>
                     <div className="pagination">
-                        <button disabled={currentPage === 1} onClick={() => setCurrentPage(1)}>First</button>
-                        <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
+                        {/* for when page becomes 0 it keeps on changing the page number as earlier we were only compare it with 1 */}
+                        <button disabled={currentPage <= 1} onClick={() => setCurrentPage(1)}>First</button>
+                        <button disabled={currentPage <= 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
                         {/* Loop */}
                         {
                             pageNumber.map(page => {
@@ -170,7 +263,9 @@ function Table(
                 </div>
             </div>
 
-
+            {
+                isEditingModalOpen && <EditModal item={editingItems} onSave={handleEditSave} onClose={handleEditCancel} />
+            }
         </div>
     )
 }

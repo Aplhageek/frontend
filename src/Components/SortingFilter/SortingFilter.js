@@ -14,7 +14,7 @@ function SortingFilter({ sortBy, handleSortByChange }) {
         <div className='sorting_filter_container'>
             <h2 className='sorting_filter_container_title'>Sort by:</h2>
 
-            <Box sx={{ maxWidth: 200 }}>
+            <Box sx={{ minWidth: 200 }}>
                 <FormControl fullWidth >
                     <Select
                         id="demo-simple-select"
