@@ -105,7 +105,7 @@ function Table(
                 rows.push(displayItems[i].property_id);
             }
             setSelectedRows(rows);
-
+            
         } else {
             setSelectedRows([]);
             isSelectedAll = false;
@@ -205,6 +205,9 @@ function Table(
         <div className='listing_table_container'>
             {/* table */}
             <table>
+
+
+                {/* displayItems | isSelectedAll | handleSelectAll */}
                 <thead>
                     <tr>
                         <th>
@@ -217,6 +220,11 @@ function Table(
                         <th>Action</th>
                     </tr>
                 </thead>
+
+
+
+
+                {/* displayItems | startIndex | endIndex | selectedRows | handleRowCheckBoxChange | handleDelete | handleEdit */}
                 <tbody>
                     {displayItems.slice(startIndex, endIndex).map((item, index) => {
                         return (
@@ -241,7 +249,9 @@ function Table(
                 </tbody>
             </table>
 
-            {/* table footer */}
+
+
+            {/* handleDeleteAllSelected | totalPages | currentPage | setCurrentPage |  */}
 
             <div className="table_footer">
                 <button className='delete_selected_btn' onClick={handleDeleteAllSelected}>Delete selected</button>
@@ -263,6 +273,9 @@ function Table(
                 </div>
             </div>
 
+
+
+            {/* itemToEdit  */} {/* handleEditSave */} {/* handleEditCancel */}
             {
                 isEditingModalOpen && <EditModal item={editingItems} onSave={handleEditSave} onClose={handleEditCancel} />
             }
